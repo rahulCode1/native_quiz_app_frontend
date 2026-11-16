@@ -4,7 +4,7 @@ import Fonts from "../constants/Fonts";
 import Colors from "../constants/Color";
 import { useSelector } from "react-redux";
 
-const QuizOptions = ({ options, handleFindCorrectAns, id }) => {
+const QuizOptions = ({ options, handleFindCorrectAns, id, width, height }) => {
   const { solvedQuizes } = useSelector((state) => state.quiz);
 
   const handleDisableOptions = (optionId) => {
@@ -12,15 +12,31 @@ const QuizOptions = ({ options, handleFindCorrectAns, id }) => {
     return isAnswered ? true : false;
   };
 
+  const outerContainerDynamicStyle = {
+    marginVertical: width < 400 ? 6 : 5,
+  };
+
+  const optionInnerContainerDynamicStyle = {
+    paddingVertical: width < 400 ? 12 : 10,
+    paddingHorizontal: width < 400 ? 8 : 14,
+  };
 
   return (
-    <View style={styles.outerContainer}>
+    <View style={[styles.outerContainer, outerContainerDynamicStyle]}>
       {options.map((option, index) => (
         <View style={styles.optionOuterContainer} key={option.id}>
           <Pressable
             android_ripple={{ color: "gray" }}
-            onPress={handleFindCorrectAns.bind(this, id, option.id)}
-            style={styles.optionInnerContainer}
+            onPress={handleFindCorrectAns.bind(
+              this,
+              id,
+              option.id,
+              option.isCorrect,
+            )}
+            style={[
+              styles.optionInnerContainer,
+              optionInnerContainerDynamicStyle,
+            ]}
             disabled={handleDisableOptions(option.id)}
           >
             <View style={styles.optionNameGroupContainer}>
@@ -52,7 +68,6 @@ export default QuizOptions;
 
 const styles = StyleSheet.create({
   outerContainer: {
-    marginVertical: 6,
     flexDirection: "column",
     gap: 8,
   },
@@ -70,8 +85,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingVertical: 12,
-    paddingHorizontal: 8,
   },
   optionNameGroupContainer: {
     flexDirection: "row",

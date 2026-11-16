@@ -70,6 +70,15 @@ const Colors = {
   // Overlay
   overlay: "rgba(0, 0, 0, 0.35)",
   transparent: "transparent",
+
+  // Header Style / Active or Inactive tint color
+  activeTintColor: "#222",
+  inActiveTintColor: "#777",
+
+  // Tab bar 
+  tabActiveBackground: "#707070",
+  tabActiveTint: "#FFFFFF",
+  tabInactiveTint: "#0e0d0d",
 };
 
 export default Colors;

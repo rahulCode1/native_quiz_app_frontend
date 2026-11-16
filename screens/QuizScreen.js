@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, Vibration } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  useWindowDimensions,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { getQuestionsAsync } from "../features/quiz/quizSlice";
@@ -7,6 +13,7 @@ import QuestionLists from "../components/ui/quiz/QuizList";
 
 const QuizScreen = () => {
   const dispatch = useDispatch();
+  const { width, height } = useWindowDimensions();
   const { error, getQuizLoading, quiz } = useSelector((state) => state.quiz);
 
   useEffect(() => {
@@ -26,8 +33,16 @@ const QuizScreen = () => {
     return <LoadingSpinner size={40} quizs={quiz} />;
   }
 
+  const deviceWidth = width < 450 ? "92%" : "80%";
+  const deviceHeight = height < 600 ? 30 : 40;
+
   return (
-    <View style={styles.screen}>
+    <View
+      style={[
+        styles.screen,
+        { maxWidth: deviceWidth, marginTop: deviceHeight },
+      ]}
+    >
       <QuestionLists quizs={quiz} />
     </View>
   );
@@ -35,8 +50,10 @@ const QuizScreen = () => {
 
 export default QuizScreen;
 
+const deviceWidth = Dimensions.get("window").width;
+
 const styles = StyleSheet.create({
   screen: {
-    marginHorizontal: 10,
+    margin: "auto",
   },
 });
