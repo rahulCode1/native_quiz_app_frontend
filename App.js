@@ -25,15 +25,14 @@ import {
 } from "@expo-google-fonts/manrope";
 import Ionicons from "@react-native-vector-icons/ionicons";
 import LoadingSpinner from "./components/ui/LoadingSpinner.js";
-import AboutUsScreen from "./screens/information/AboutUsScreen.js";
-import ContactUsScreen from "./screens/information/ContactUsScreen.js";
-import DisclamerScreen from "./screens/information/DisclaimerScreen.js";
-import PrivacyPolicyScreen from "./screens/information/PrivacyPolicyScreen.js";
-import TermsScreen from "./screens/information/TermsScreen.js";
+import * as SplashScreen from "expo-splash-screen";
+import { useEffect } from "react";
 
 const Stack = createNativeStackNavigator();
 const BottomTabs = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
+
+SplashScreen.preventAutoHideAsync();
 
 const DrawerNavigator = () => {
   return (
@@ -46,7 +45,9 @@ const DrawerNavigator = () => {
     >
       <Drawer.Screen
         name="AboutUs"
-        component={AboutUsScreen}
+        getComponent={() =>
+          require("./screens/information/AboutUsScreen").default
+        }
         options={{
           title: "About Us",
           drawerIcon: ({ color, size }) => (
@@ -61,7 +62,9 @@ const DrawerNavigator = () => {
 
       <Drawer.Screen
         name="ContactUs"
-        component={ContactUsScreen}
+        getComponent={() =>
+          require("./screens/information/ContactUsScreen").default
+        }
         options={{
           title: "Contact Us",
           drawerIcon: ({ color, size }) => (
@@ -72,7 +75,9 @@ const DrawerNavigator = () => {
 
       <Drawer.Screen
         name="Disclamer"
-        component={DisclamerScreen}
+        getComponent={() =>
+          require("./screens/information/DisclaimerScreen").default
+        }
         options={{
           title: "Disclaimer",
           drawerIcon: ({ color, size }) => (
@@ -83,7 +88,9 @@ const DrawerNavigator = () => {
 
       <Drawer.Screen
         name="PrivacyPolicy"
-        component={PrivacyPolicyScreen}
+        getComponent={() =>
+          require("./screens/information/PrivacyPolicyScreen").default
+        }
         options={{
           title: "Privacy Policy",
           drawerIcon: ({ color, size }) => (
@@ -98,7 +105,9 @@ const DrawerNavigator = () => {
 
       <Drawer.Screen
         name="Terms"
-        component={TermsScreen}
+        getComponent={() =>
+          require("./screens/information/TermsScreen").default
+        }
         options={{
           title: "Terms & Conditions",
           drawerIcon: ({ color, size }) => (
@@ -138,6 +147,12 @@ export default function App() {
     Manrope_700Bold,
     Manrope_800ExtraBold,
   });
+
+  useEffect(() => {
+    if (fontsLoaded) {
+      SplashScreen.hideAsync();
+    }
+  }, [fontsLoaded]);
 
   if (!fontsLoaded) {
     return <LoadingSpinner size={30} />;
